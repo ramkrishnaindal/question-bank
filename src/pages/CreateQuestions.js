@@ -1,0 +1,4 @@
+import CreateQuestionsForQuestionBankComponent from '../components/CreateQuestionsForQuestionBankComponent'
+const createQuestionsForQuestionBank=()=><CreateQuestionsForQuestionBankComponent/>
+
+export default createQuestionsForQuestionBank;
