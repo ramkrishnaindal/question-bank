@@ -7,7 +7,7 @@ if( props.questions && props.questions.length==0)
   >
       No Questions found. Please consider adding at least one.
       </div>
-      <CreateQuestion/>
+      <CreateQuestion questionBankId={props.questionBankId}/>
       </>
 }
 return null;

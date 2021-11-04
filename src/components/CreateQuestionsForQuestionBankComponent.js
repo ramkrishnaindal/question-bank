@@ -6,6 +6,7 @@ const CreateQuestionsForQuestionBankComponent = () => {
   const [loading, setIsLoading] = useState(false);
   const [questionBanks, setQuestionBanks] = useState([]);
   const [questions, setQuestions] = useState();
+  const [questionBankID, setquestionBankID] = useState();
   
   useEffect(() => {
     setIsLoading(true);
@@ -20,7 +21,7 @@ const CreateQuestionsForQuestionBankComponent = () => {
   }, []);
   const questionBankTitleChangeHandler=(e)=>{
     const qsnBank=questionBanks.find(sqb=>sqb.id===e.target.value)
-    
+    setquestionBankID(e.target.value);
     if(qsnBank && qsnBank.questions)
     setQuestions(qsnBank.questions)
     else{
@@ -58,7 +59,7 @@ const CreateQuestionsForQuestionBankComponent = () => {
               ))}
             </select>
           </div>
-          <Questions questions={questions}/>
+          <Questions questions={questions} questionBankId={questionBankID}/>
           
         </form>
       </div>

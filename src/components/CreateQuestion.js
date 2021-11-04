@@ -1,9 +1,11 @@
 import { useState, useRef } from "react";
 import Answer from "./Answer";
+import { v4 as uuid } from "uuid";
 import classes from "./CreateQuestion.module.css";
-const CreateQuestion = () => {
+const CreateQuestion = (props) => {
   const [questionType, setQuestionType] = useState("0");
   const [duplicates, setDuplicates] = useState([]);
+  const [sameQuestion, setSameQuestion] = useState(false);
   const [questionIsValid, setQuestionIsValid] = useState(true);
   const [answerIsValid, setAnswerIsValid] = useState(false);
   const [answersIsValid, setAnswersIsValid] = useState([]);
@@ -32,7 +34,7 @@ const CreateQuestion = () => {
       const duplicateElements = answersPrev.filter(
         (item, index) => answersPrev.indexOf(item) !== index
       );
-      
+
       setDuplicates(duplicateElements);
       return answersPrev;
     });
@@ -50,9 +52,7 @@ const CreateQuestion = () => {
           isValid = false;
         }
       }
-      
-      
-  
+
       setAnswersIsValid(answersIsValidTmp);
     });
     setAnswerIsValid(isValid);
@@ -95,7 +95,8 @@ const CreateQuestion = () => {
       return prevCheckedValues;
     });
   };
-  const addQuestionHandler = () => {
+  const addQuestionHandler = async () => {
+    console.log("questionBankId", props.questionBankId);
     const questionIsValid = questionInputRef.current.value.trim().length > 0;
     setQuestionIsValid(questionIsValid);
     let isValid = true;
@@ -115,7 +116,7 @@ const CreateQuestion = () => {
     ) {
       return;
     }
-    const answerSelected = answers.some((ans) => ans === true);
+    const answerSelected = checkedValues.some((ans) => ans === true);
     if (
       questionType === "1" &&
       (!answerIsValid || !answerSelected || !questionIsValid)
@@ -129,6 +130,49 @@ const CreateQuestion = () => {
     if (duplicateElements.length > 0) {
       return;
     }
+    let answersToPost = [];
+    if (questionType === "0") {
+      answers.forEach((ans, index) => {
+        answersToPost.push({ answer: ans, value: +index === +option });
+      });
+    }
+    else{
+      answers.forEach((ans, index) => {
+        answersToPost.push({ answer: ans, value: !!checkedValues[index] });
+      });
+    }
+    const body = {
+      id: uuid(),
+      question: questionInputRef.current.value,
+      questionHint: questionHintInputRef.current.value,
+      isSingle: questionType === "0",
+      answers: answersToPost,
+    };
+    console.log("body", body);
+    const responseGet = await fetch(
+      `http://localhost:3004/questionBank/${props.questionBankId}`
+    );
+    const data = await responseGet.json();
+    const questions = data.questions;
+    const found = questions.some(
+      (qns) => qns.question === questionInputRef.current.value
+    );
+    if (found) {
+      setSameQuestion(true);
+      return;
+    } else {
+      setSameQuestion(false);
+    }
+    questions.push(body);
+    const response = await fetch(
+      `http://localhost:3004/questionBank/${props.questionBankId}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify({ questions: questions }),
+        headers: { "Content-type": "application/json" },
+      }
+    );
+
     console.log("answerIsValid", answerIsValid);
     console.log("option", option);
     console.log("answers", answers);
@@ -252,16 +296,29 @@ const CreateQuestion = () => {
         </div>
 
         {getAnswers()}
-        {duplicates && duplicates.length > 0 && <>
-          <div style={{ color: "red" }}>Duplicate entries found</div>
-          {
-          duplicates.map((dup, index) => (
-            <div key={index}>
-              <label className="form-text" style={{ color: "red" }}>
-                {dup}
-              </label>
-            </div>
-          ))}</>}
+        {duplicates && duplicates.length > 0 && (
+          <>
+            <div style={{ color: "red" }}>Duplicate entries found</div>
+            {duplicates.map((dup, index) => (
+              <div key={index}>
+                <label className="form-text" style={{ color: "red" }}>
+                  {dup}
+                </label>
+              </div>
+            ))}
+          </>
+        )}
+        {sameQuestion && (
+          <>
+            <div style={{ color: "red" }}>Question already exists.</div>
+            <label className="form-text" style={{ color: "red" }}>
+              {questionInputRef.current.value}
+            </label>
+            
+          </>
+        )}
+
+        
         <div className={classes.actions}>
           <button
             type="button"
