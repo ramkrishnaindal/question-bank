@@ -39,8 +39,8 @@ const CreateQuestionsForQuestionBankComponent = () => {
     <div
       className={`row justify-content-center align-items-center ${classes.content}`}
     >
-      <div className="col-10 ">
-        <form onSubmit={() => {}}>
+      <div className="col-10">
+        <form onSubmit={() => {}} className="d-flex flex-column">
           <div className="form-group">
             <label className="form-label" htmlFor="title">
               Question bank title
@@ -59,14 +59,7 @@ const CreateQuestionsForQuestionBankComponent = () => {
             </select>
           </div>
           <Questions questions={questions}/>
-          <div className={classes.actions}>
-            <button
-              type="submit"
-              className="btn btn-outline-primary d-block ms-auto my-3"
-            >
-              Save Question Bank
-            </button>
-          </div>
+          
         </form>
       </div>
     </div>

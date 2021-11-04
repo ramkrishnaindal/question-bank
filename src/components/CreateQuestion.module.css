@@ -1,3 +1,7 @@
 .content{
     height: 80vh;
 }
+.btn-small{
+    font-size: .9rem;
+    margin-left: auto;
+}
