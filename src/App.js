@@ -1,11 +1,11 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
-import CreateQuestions from './pages/CreateQuestions';
-// import CreateQuestionBank from './pages/CreateQuestionBank';
+// import CreateQuestions from './pages/CreateQuestions';
+import QuestionBank from './pages/QuestionBank';
 function App() {
   return (
     <div className="container">
-      <CreateQuestions/>
+      <QuestionBank/>
     </div>
   );
 }
