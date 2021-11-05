@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Answer from "./Answer";
 import { v4 as uuid } from "uuid";
 import classes from "./CreateQuestion.module.css";
@@ -15,6 +15,19 @@ const CreateQuestion = (props) => {
   const [answers, setAnswers] = useState([]);
   const questionInputRef = useRef();
   const questionHintInputRef = useRef();
+  console.log("resetNew2",props.resetNew);
+  const {resetNew}=props
+  useEffect(()=>{
+    if(resetNew){
+      setAnswers([])
+      setAnswerCount(0)
+      setCheckedValues([])
+      setQuestionType("0")
+      setOption('')
+      questionInputRef.current.value=""
+      questionHintInputRef.current.value=""
+    }  
+  },[resetNew])
   const onQuestionChangeHandler = (e) => {
     setQuestionIsValid(e.target.value.trim().length > 0);
   };
@@ -96,7 +109,7 @@ const CreateQuestion = (props) => {
     });
   };
   const addQuestionHandler = async () => {
-    console.log("questionBankId", props.questionBankId);
+    
     const questionIsValid = questionInputRef.current.value.trim().length > 0;
     setQuestionIsValid(questionIsValid);
     let isValid = true;
@@ -148,7 +161,7 @@ const CreateQuestion = (props) => {
       isSingle: questionType === "0",
       answers: answersToPost,
     };
-    console.log("body", body);
+    
     const responseGet = await fetch(
       `http://localhost:3004/questionBank/${props.questionBankId}`
     );
@@ -164,19 +177,12 @@ const CreateQuestion = (props) => {
       setSameQuestion(false);
     }
     questions.push(body);
-    const response = await fetch(
-      `http://localhost:3004/questionBank/${props.questionBankId}`,
-      {
-        method: "PATCH",
-        body: JSON.stringify({ questions: questions }),
-        headers: { "Content-type": "application/json" },
-      }
-    );
+    props.addQuestion(questions)
 
-    console.log("answerIsValid", answerIsValid);
-    console.log("option", option);
-    console.log("answers", answers);
-    console.log("checkedValues", checkedValues);
+    // console.log("answerIsValid", answerIsValid);
+    // console.log("option", option);
+    // console.log("answers", answers);
+    // console.log("checkedValues", checkedValues);
   };
   const getAnswers = () => {
     const answersComp = [];
@@ -203,7 +209,7 @@ const CreateQuestion = (props) => {
   };
   return (
     <div
-      className={`row justify-content-center align-items-center ${classes.content}`}
+      className={`row justify-content-center align-items-center ${classes.content}`} style={ { border: "2px solid rgb(247, 248, 249)","overflowx":"hidden",overflowY:"auto" ,marginRight:"0px"} }
     >
       <div className="col-10 ">
         <div className="row mb-3">

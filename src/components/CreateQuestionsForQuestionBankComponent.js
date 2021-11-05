@@ -4,22 +4,63 @@ import Questions  from "./Questions";
 
 const CreateQuestionsForQuestionBankComponent = () => {
   const [loading, setIsLoading] = useState(false);
+  const [resetNew, setResetNew] = useState(false);
   const [questionBanks, setQuestionBanks] = useState([]);
   const [questions, setQuestions] = useState();
   const [questionBankID, setquestionBankID] = useState();
-  
+
+  const removeQuestionHandler=async (id)=>{
+    let responseGet = await fetch(
+      `http://localhost:3004/questionBank/${questionBankID}`
+    );
+    let data = await responseGet.json();
+    const questions = data.questions.filter(qns=>qns.id!==id);
+    
+    const response = await fetch(
+      `http://localhost:3004/questionBank/${questionBankID}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify({ questions: questions }),
+        headers: { "Content-type": "application/json" },
+      }
+    );
+    responseGet = await fetch(
+      `http://localhost:3004/questionBank/${questionBankID}`
+    );
+    data = await responseGet.json();
+    setQuestions(data.questions);
+  }
+  const addQuestionHandler= async (questions)=>{
+    const response = await fetch(
+      `http://localhost:3004/questionBank/${questionBankID}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify({ questions: questions }),
+        headers: { "Content-type": "application/json" },
+      }
+    );
+    const responseGet = await fetch(
+      `http://localhost:3004/questionBank/${questionBankID}`
+    );
+    const data = await responseGet.json();
+    setQuestions(data.questions);
+    setResetNew(true);
+    setTimeout(()=>{
+      setResetNew(false);
+    },100)
+  }
   useEffect(() => {
     setIsLoading(true);
     const loadData = async () => {
       const response = await fetch("http://localhost:3004/questionBank");
       const data = await response.json();
-      console.log(data);
+      
       setQuestionBanks(data);
       setIsLoading(false);
     };
     loadData();
   }, []);
-  const questionBankTitleChangeHandler=(e)=>{
+  const questionBankTitleChangeHandler=(e)=>{    
     const qsnBank=questionBanks.find(sqb=>sqb.id===e.target.value)
     setquestionBankID(e.target.value);
     if(qsnBank && qsnBank.questions)
@@ -38,9 +79,9 @@ const CreateQuestionsForQuestionBankComponent = () => {
     );
   return (
     <div
-      className={`row justify-content-center align-items-center ${classes.content}`}
+      className={`row justify-content-center align-items-center ${classes.content}`} 
     >
-      <div className="col-10">
+      <div className="col-10" style={{border:"2px solid rgb(247, 248, 249)"}}>
         <form onSubmit={() => {}} className="d-flex flex-column">
           <div className="form-group">
             <label className="form-label" htmlFor="title">
@@ -59,7 +100,7 @@ const CreateQuestionsForQuestionBankComponent = () => {
               ))}
             </select>
           </div>
-          <Questions questions={questions} questionBankId={questionBankID}/>
+          <Questions resetNew={resetNew} questions={questions} questionBankId={questionBankID} removeQuestion={removeQuestionHandler} addQuestion={addQuestionHandler} />
           
         </form>
       </div>

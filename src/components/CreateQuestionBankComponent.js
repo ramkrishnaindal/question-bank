@@ -31,7 +31,7 @@ const CreateQuestionBankComponent =  () => {
         headers:{'Content-type':"application/json"}
     })
     const data=await response.json();
-    console.log(data)
+    
   }
   return (
     <div className={`row justify-content-center align-items-center ${classes.content}`}>
