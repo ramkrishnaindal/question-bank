@@ -11,8 +11,8 @@ const ViewQuestionBanks = (props) => {
           <div key={qnsBank.id} className="row mb-3 justify-content-center">
             <div className="col-10">
               <div key={qnsBank.id} className="row align-items-center">
-                <div className="col-8">{qnsBank.title}</div>
-                <div className="col-2">
+                <div className="col-7">{qnsBank.title}</div>
+                <div className="col-3">
                   {qnsBank.questions.length} questions
                 </div>
                 <div className="col-2">
