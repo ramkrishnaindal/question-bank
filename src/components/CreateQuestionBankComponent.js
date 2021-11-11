@@ -33,6 +33,7 @@ const CreateQuestionBankComponent = (props) => {
       id: uuid(),
       title: titleInputRef.current.value,
       questions: [],
+      tests: []
     };
     props.addQuestionBank(body);
   };

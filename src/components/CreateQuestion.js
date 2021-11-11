@@ -15,19 +15,19 @@ const CreateQuestion = (props) => {
   const [answers, setAnswers] = useState([]);
   const questionInputRef = useRef();
   const questionHintInputRef = useRef();
-  console.log("resetNew2",props.resetNew);
-  const {resetNew}=props
-  useEffect(()=>{
-    if(resetNew){
-      setAnswers([])
-      setAnswerCount(0)
-      setCheckedValues([])
-      setQuestionType("0")
-      setOption('')
-      questionInputRef.current.value=""
-      questionHintInputRef.current.value=""
-    }  
-  },[resetNew])
+  console.log("resetNew2", props.resetNew);
+  const { resetNew } = props;
+  useEffect(() => {
+    if (resetNew) {
+      setAnswers([]);
+      setAnswerCount(0);
+      setCheckedValues([]);
+      setQuestionType("0");
+      setOption("");
+      questionInputRef.current.value = "";
+      questionHintInputRef.current.value = "";
+    }
+  }, [resetNew]);
   const onQuestionChangeHandler = (e) => {
     setQuestionIsValid(e.target.value.trim().length > 0);
   };
@@ -109,7 +109,6 @@ const CreateQuestion = (props) => {
     });
   };
   const addQuestionHandler = async () => {
-    
     const questionIsValid = questionInputRef.current.value.trim().length > 0;
     setQuestionIsValid(questionIsValid);
     let isValid = true;
@@ -148,8 +147,7 @@ const CreateQuestion = (props) => {
       answers.forEach((ans, index) => {
         answersToPost.push({ answer: ans, value: +index === +option });
       });
-    }
-    else{
+    } else {
       answers.forEach((ans, index) => {
         answersToPost.push({ answer: ans, value: !!checkedValues[index] });
       });
@@ -161,7 +159,7 @@ const CreateQuestion = (props) => {
       isSingle: questionType === "0",
       answers: answersToPost,
     };
-    
+
     const responseGet = await fetch(
       `http://localhost:3004/questionBank/${props.questionBankId}`
     );
@@ -177,7 +175,7 @@ const CreateQuestion = (props) => {
       setSameQuestion(false);
     }
     questions.push(body);
-    props.addQuestion(questions)
+    props.addQuestion(questions);
 
     // console.log("answerIsValid", answerIsValid);
     // console.log("option", option);
@@ -209,7 +207,13 @@ const CreateQuestion = (props) => {
   };
   return (
     <div
-      className={`row justify-content-center align-items-center ${classes.content}`} style={ { border: "2px solid rgb(247, 248, 249)","overflowx":"hidden",overflowY:"auto" ,marginRight:"0px"} }
+      className={`row justify-content-center align-items-center ${classes.content}`}
+      style={{
+        border: "2px solid rgb(247, 248, 249)",
+        overflowx: "hidden",
+        overflowY: "auto",
+        marginRight: "0px",
+      }}
     >
       <div className="col-10 ">
         <div className="row mb-3">
@@ -320,11 +324,9 @@ const CreateQuestion = (props) => {
             <label className="form-text" style={{ color: "red" }}>
               {questionInputRef.current.value}
             </label>
-            
           </>
         )}
 
-        
         <div className={classes.actions}>
           <button
             type="button"
