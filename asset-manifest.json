@@ -1,23 +1,23 @@
 {
   "files": {
     "main.css": "/question-bank/static/css/main.85ab8b2f.chunk.css",
-    "main.js": "/question-bank/static/js/main.44cce663.chunk.js",
-    "main.js.map": "/question-bank/static/js/main.44cce663.chunk.js.map",
+    "main.js": "/question-bank/static/js/main.ebce0b6a.chunk.js",
+    "main.js.map": "/question-bank/static/js/main.ebce0b6a.chunk.js.map",
     "runtime-main.js": "/question-bank/static/js/runtime-main.72011a3f.js",
     "runtime-main.js.map": "/question-bank/static/js/runtime-main.72011a3f.js.map",
     "static/css/2.0a9ec390.chunk.css": "/question-bank/static/css/2.0a9ec390.chunk.css",
-    "static/js/2.a4c9adc1.chunk.js": "/question-bank/static/js/2.a4c9adc1.chunk.js",
-    "static/js/2.a4c9adc1.chunk.js.map": "/question-bank/static/js/2.a4c9adc1.chunk.js.map",
+    "static/js/2.b1896c2c.chunk.js": "/question-bank/static/js/2.b1896c2c.chunk.js",
+    "static/js/2.b1896c2c.chunk.js.map": "/question-bank/static/js/2.b1896c2c.chunk.js.map",
     "index.html": "/question-bank/index.html",
     "static/css/2.0a9ec390.chunk.css.map": "/question-bank/static/css/2.0a9ec390.chunk.css.map",
     "static/css/main.85ab8b2f.chunk.css.map": "/question-bank/static/css/main.85ab8b2f.chunk.css.map",
-    "static/js/2.a4c9adc1.chunk.js.LICENSE.txt": "/question-bank/static/js/2.a4c9adc1.chunk.js.LICENSE.txt"
+    "static/js/2.b1896c2c.chunk.js.LICENSE.txt": "/question-bank/static/js/2.b1896c2c.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.72011a3f.js",
     "static/css/2.0a9ec390.chunk.css",
-    "static/js/2.a4c9adc1.chunk.js",
+    "static/js/2.b1896c2c.chunk.js",
     "static/css/main.85ab8b2f.chunk.css",
-    "static/js/main.44cce663.chunk.js"
+    "static/js/main.ebce0b6a.chunk.js"
   ]
 }
