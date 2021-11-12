@@ -11,13 +11,13 @@ const CreateQuestionsForQuestionBankComponent = () => {
 
   const removeQuestionHandler=async (id)=>{
     let responseGet = await fetch(
-      `http://localhost:3004/questionBank/${questionBankID}`
+      `https://question-bank-json-server.herokuapp.com/questionBank/${questionBankID}`
     );
     let data = await responseGet.json();
     const questions = data.questions.filter(qns=>qns.id!==id);
     
     const response = await fetch(
-      `http://localhost:3004/questionBank/${questionBankID}`,
+      `https://question-bank-json-server.herokuapp.com/questionBank/${questionBankID}`,
       {
         method: "PATCH",
         body: JSON.stringify({ questions: questions }),
@@ -25,14 +25,14 @@ const CreateQuestionsForQuestionBankComponent = () => {
       }
     );
     responseGet = await fetch(
-      `http://localhost:3004/questionBank/${questionBankID}`
+      `https://question-bank-json-server.herokuapp.com/questionBank/${questionBankID}`
     );
     data = await responseGet.json();
     setQuestions(data.questions);
   }
   const addQuestionHandler= async (questions)=>{
     const response = await fetch(
-      `http://localhost:3004/questionBank/${questionBankID}`,
+      `https://question-bank-json-server.herokuapp.com/questionBank/${questionBankID}`,
       {
         method: "PATCH",
         body: JSON.stringify({ questions: questions }),
@@ -40,7 +40,7 @@ const CreateQuestionsForQuestionBankComponent = () => {
       }
     );
     const responseGet = await fetch(
-      `http://localhost:3004/questionBank/${questionBankID}`
+      `https://question-bank-json-server.herokuapp.com/questionBank/${questionBankID}`
     );
     const data = await responseGet.json();
     setQuestions(data.questions);
@@ -52,7 +52,7 @@ const CreateQuestionsForQuestionBankComponent = () => {
   useEffect(() => {
     setIsLoading(true);
     const loadData = async () => {
-      const response = await fetch("http://localhost:3004/questionBank");
+      const response = await fetch("https://question-bank-json-server.herokuapp.com/questionBank");
       const data = await response.json();
       
       setQuestionBanks(data);

@@ -9,7 +9,7 @@ const TestAnswer = (props) => {
             type="radio"
             name={props.name}
             checked={
-              props.answerSubmitted
+              !!props.answerSubmitted
             }
             value={props.answer}
             onChange={props.optionChanged}
@@ -25,7 +25,7 @@ const TestAnswer = (props) => {
             className="form-check-input"
             type="checkbox"
             name={props.answer}
-            checked={props.answerSubmitted}
+            checked={!!props.answerSubmitted}
             onChange={props.optionChanged}
           />
         </div>

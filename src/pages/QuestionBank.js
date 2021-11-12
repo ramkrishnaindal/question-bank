@@ -8,7 +8,7 @@ const QuestionBank=()=>{
     useEffect(() => {
       setIsLoading(true);
       const loadData = async () => {
-        const response = await fetch("http://localhost:3004/questionBank");
+        const response = await fetch(`https://question-bank-json-server.herokuapp.com/questionBank`);
         const data = await response.json();
   
         setQuestionBanks(data);
@@ -18,24 +18,24 @@ const QuestionBank=()=>{
     }, []);
   
     const addQuestionBankHandler=async (body)=>{
-        let response= await fetch('http://localhost:3004/questionBank',{
+        let response= await fetch(`https://question-bank-json-server.herokuapp.com/questionBank`,{
             method:'POST',
             body:JSON.stringify(body),
             headers:{'Content-type':"application/json"}
         })
         
-        response = await fetch("http://localhost:3004/questionBank");
+        response = await fetch(`https://question-bank-json-server.herokuapp.com/questionBank`);
         const data = await response.json();
   
         setQuestionBanks(data); 
     }
     const removeQuestionBankHandler=async (id)=>{
-        let response= await fetch(`http://localhost:3004/questionBank/${id}`,{
+        let response= await fetch(`https://question-bank-json-server.herokuapp.com/questionBank/${id}`,{
             method:'DELETE',
             headers:{'Content-type':"application/json"}
         })
         
-        response = await fetch("http://localhost:3004/questionBank");
+        response = await fetch(`https://question-bank-json-server.herokuapp.com/questionBank`);
         const data = await response.json();
   
         setQuestionBanks(data); 

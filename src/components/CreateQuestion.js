@@ -161,7 +161,7 @@ const CreateQuestion = (props) => {
     };
 
     const responseGet = await fetch(
-      `http://localhost:3004/questionBank/${props.questionBankId}`
+      `https://question-bank-json-server.herokuapp.com/questionBank/${props.questionBankId}`
     );
     const data = await responseGet.json();
     const questions = data.questions;

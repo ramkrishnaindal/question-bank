@@ -55,24 +55,27 @@ const NewTest = () => {
   }
   const submitTestHandler= async()=>{
     debugger
+    const score=getMarksScored()
      const modifiedTests= tests.map(t=>{
       if(t.id===currentTest.id)
       {
         t.answers=answers
+        t.submitted=true
+        t.score=score
       }
       return t
      })
-     const score=getMarksScored()
-     setTestScore(score)
+     
+     setTestScore(`You scored ${score}/${answers.length}` )
      const response = await fetch(
-      `http://localhost:3004/questionBank/${questionBankID}`,
+      `https://question-bank-json-server.herokuapp.com/questionBank/${questionBankID}`,
       {
         method: "PATCH",
-        body: JSON.stringify({ tests: modifiedTests,submitted:true,score:score }),
+        body: JSON.stringify({ tests: modifiedTests }),
         headers: { "Content-type": "application/json" },
       }
     );
-    
+    debugger
   }
   const answerChangedHandler = (id, answersChanged) => {
     debugger
@@ -112,7 +115,7 @@ const NewTest = () => {
   useEffect(() => {
     setIsLoading(true);
     const loadData = async () => {
-      const response = await fetch("http://localhost:3004/questionBank");
+      const response = await fetch("https://question-bank-json-server.herokuapp.com/questionBank");
       let data = await response.json();
       // .filte((qnsBank) => qnsBank.questions.length > 0);
       data = data.filter((qnsBank) => qnsBank.questions.length > 0);
@@ -148,7 +151,7 @@ const NewTest = () => {
         answers: qns.answers.map((a) => {
           return {
             ...a,
-            answerSubmitted: false,
+            answerSubmitted: null,
           };
         }),
       };
@@ -163,7 +166,7 @@ const NewTest = () => {
     setTests(testsModified);
 
     const response = await fetch(
-      `http://localhost:3004/questionBank/${questionBankID}`,
+      `https://question-bank-json-server.herokuapp.com/questionBank/${questionBankID}`,
       {
         method: "PATCH",
         body: JSON.stringify({ tests: testsModified }),
@@ -171,7 +174,7 @@ const NewTest = () => {
       }
     );
     // responseGet = await fetch(
-    //   `http://localhost:3004/questionBank/${questionBankID}`
+    //   `https://question-bank-json-server.herokuapp.com/questionBank/${questionBankID}`
     // );
     // data = await responseGet.json();
     // setQuestions(data.questions);
@@ -311,7 +314,7 @@ const NewTest = () => {
           
           <div className="col-2 my-3 text-primary mx-auto d-block">
             <h6 style={{textAlign:"center"}}>
-              You scored {testScore}
+              {testScore}
             </h6>
           </div>
         </div>

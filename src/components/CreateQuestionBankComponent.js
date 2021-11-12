@@ -20,7 +20,7 @@ const CreateQuestionBankComponent = (props) => {
       return;
     }
     setTitleIsValid(true);
-    const response = await fetch("http://localhost:3004/questionBank");
+    const response = await fetch(`https://question-bank-json-server.herokuapp.com/questionBank`);
     const data = await response.json();
     const some = data.some(
       (qnsBnk) => qnsBnk.title === titleInputRef.current.value.trim()
@@ -39,7 +39,7 @@ const CreateQuestionBankComponent = (props) => {
   };
   return (
     <div
-      className={`row justify-content-center align-items-start mb-3 ${classes.content}`}
+      className={`row justify-content-center align-items-start mb-3`}
     >
       <div className="col-10 ">
         <form onSubmit={saveHandler}>
