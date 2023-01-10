@@ -19,66 +19,61 @@ const NewTest = () => {
   const noOfQuestionsChangeHandler = (e) => {
     setNoOfQuestions(e.target.value);
   };
-  const getMarksScored=()=>{
-    debugger
-    let correctAnswers=0
-    answers.forEach(qns=>{
-      let qnsAnsweredCorrect=true
-      let qnsAnsweredCorrectVal=0
-      let qnsAnsweredCorrectPerc=0
-      qns.answers.forEach(ans=>{        
-        if(qns.isSingle){
-          if(ans.value!==ans.answerSubmitted)  
-          {
-            qnsAnsweredCorrect=false
-            return
-          }          
-        }else{
-          if(ans.value===ans.answerSubmitted)  
-          {
-            qnsAnsweredCorrectVal++
+  const getMarksScored = () => {
+    debugger;
+    let correctAnswers = 0;
+    answers.forEach((qns) => {
+      let qnsAnsweredCorrect = true;
+      let qnsAnsweredCorrectVal = 0;
+      let qnsAnsweredCorrectPerc = 0;
+      qns.answers.forEach((ans) => {
+        if (qns.isSingle) {
+          if (ans.value !== ans.answerSubmitted) {
+            qnsAnsweredCorrect = false;
+            return;
+          }
+        } else {
+          if (ans.value === ans.answerSubmitted) {
+            qnsAnsweredCorrectVal++;
           }
         }
-      })
-      if(qns.isSingle)
-      {
-        if(qnsAnsweredCorrect)
-        {
-          correctAnswers++
-        }  
-      }else{
-        qnsAnsweredCorrectPerc=(qnsAnsweredCorrectVal/qns.answers.length)
-        correctAnswers+=qnsAnsweredCorrectPerc
+      });
+      if (qns.isSingle) {
+        if (qnsAnsweredCorrect) {
+          correctAnswers++;
+        }
+      } else {
+        qnsAnsweredCorrectPerc = qnsAnsweredCorrectVal / qns.answers.length;
+        correctAnswers += qnsAnsweredCorrectPerc;
       }
-    })
-    return Math.round(correctAnswers * 100) / 100
-  }
-  const submitTestHandler= async()=>{
-    debugger
-    const score=getMarksScored()
-     const modifiedTests= tests.map(t=>{
-      if(t.id===currentTest.id)
-      {
-        t.answers=answers
-        t.submitted=true
-        t.score=score
+    });
+    return Math.round(correctAnswers * 100) / 100;
+  };
+  const submitTestHandler = async () => {
+    debugger;
+    const score = getMarksScored();
+    const modifiedTests = tests.map((t) => {
+      if (t.id === currentTest.id) {
+        t.answers = answers;
+        t.submitted = true;
+        t.score = score;
       }
-      return t
-     })
-     
-     setTestScore(`You scored ${score}/${answers.length}` )
-     const response = await fetch(
-      `https://question-bank-json-server.herokuapp.com/questionBank/${questionBankID}`,
+      return t;
+    });
+
+    setTestScore(`You scored ${score}/${answers.length}`);
+    const response = await fetch(
+      `${process.env.REACT_APP_JSON_SERVER_URL}/questionBank/${questionBankID}`,
       {
         method: "PATCH",
         body: JSON.stringify({ tests: modifiedTests }),
         headers: { "Content-type": "application/json" },
       }
     );
-    debugger
-  }
+    debugger;
+  };
   const answerChangedHandler = (id, answersChanged) => {
-    debugger
+    debugger;
     const answersToBeChanged = [...answers];
     const changedPageQuestions = answersToBeChanged.map((pqns) => {
       if (pqns.id === id) {
@@ -94,7 +89,7 @@ const NewTest = () => {
     setquestionBankID(e.target.value);
     if (qsnBank && qsnBank.questions) {
       setQuestions(qsnBank.questions);
-      
+
       setTests(qsnBank.tests ? qsnBank.tests : []);
       // setCurrentTest(() => {
       //   const test = qsnBank.tests.find(
@@ -108,14 +103,16 @@ const NewTest = () => {
       setQuestions(null);
     }
   };
-  const resetTestHandler=()=>{
-    setCurrentTest(null)
-    setTestScore(null)
-  }
+  const resetTestHandler = () => {
+    setCurrentTest(null);
+    setTestScore(null);
+  };
   useEffect(() => {
     setIsLoading(true);
     const loadData = async () => {
-      const response = await fetch("https://question-bank-json-server.herokuapp.com/questionBank");
+      const response = await fetch(
+        `${process.env.REACT_APP_JSON_SERVER_URL}/questionBank`
+      );
       let data = await response.json();
       // .filte((qnsBank) => qnsBank.questions.length > 0);
       data = data.filter((qnsBank) => qnsBank.questions.length > 0);
@@ -166,7 +163,7 @@ const NewTest = () => {
     setTests(testsModified);
 
     const response = await fetch(
-      `https://question-bank-json-server.herokuapp.com/questionBank/${questionBankID}`,
+      `${process.env.REACT_APP_JSON_SERVER_URL}/questionBank/${questionBankID}`,
       {
         method: "PATCH",
         body: JSON.stringify({ tests: testsModified }),
@@ -174,7 +171,7 @@ const NewTest = () => {
       }
     );
     // responseGet = await fetch(
-    //   `https://question-bank-json-server.herokuapp.com/questionBank/${questionBankID}`
+    //   `${process.env.REACT_APP_JSON_SERVER_URL}/questionBank/${questionBankID}`
     // );
     // data = await responseGet.json();
     // setQuestions(data.questions);
@@ -293,54 +290,50 @@ const NewTest = () => {
   if (currentTest)
     return (
       <>
-      <AnswersWrapper
-        answers={answers}
-        noOfQuestionsPerPage={currentTest.noOfQuestionsPerPage}
-        answerChanged={answerChangedHandler}
-        submitTest={submitTestHandler}
-        isSubmitted={!!testScore}
-      />
-       {testScore&& (
-         <>
-        <div
-          class="row"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            border: "2px solid rgb(247, 248, 249)",
-          }}
-        >
-          
-          <div className="col-2 my-3 text-primary mx-auto d-block">
-            <h6 style={{textAlign:"center"}}>
-              {testScore}
-            </h6>
-          </div>
-        </div>
-
-        <div
-          class="row"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            border: "2px solid rgb(247, 248, 249)",
-          }}
-        >
-          
-          <div className="col-2 my-3">
-            <button
-              type="button"
-              className="btn btn-primary mx-auto d-block"
-              onClick={resetTestHandler}
+        <AnswersWrapper
+          answers={answers}
+          noOfQuestionsPerPage={currentTest.noOfQuestionsPerPage}
+          answerChanged={answerChangedHandler}
+          submitTest={submitTestHandler}
+          isSubmitted={!!testScore}
+        />
+        {testScore && (
+          <>
+            <div
+              class="row"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                border: "2px solid rgb(247, 248, 249)",
+              }}
             >
-              Reset
-            </button>
-          </div>
-        </div>
-        </>
-      )}
+              <div className="col-2 my-3 text-primary mx-auto d-block">
+                <h6 style={{ textAlign: "center" }}>{testScore}</h6>
+              </div>
+            </div>
+
+            <div
+              class="row"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                border: "2px solid rgb(247, 248, 249)",
+              }}
+            >
+              <div className="col-2 my-3">
+                <button
+                  type="button"
+                  className="btn btn-primary mx-auto d-block"
+                  onClick={resetTestHandler}
+                >
+                  Reset
+                </button>
+              </div>
+            </div>
+          </>
+        )}
       </>
     );
 };
